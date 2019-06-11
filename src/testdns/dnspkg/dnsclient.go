@@ -79,7 +79,7 @@ func queryDNS(addr string, ch chan *DNSLookupResponse) {
 	case "ipv6":
 		qType = dns.TypeAAAA
 	}
-	fmt.Printf("\nqType is %v", qType)
+	fmt.Printf("\nqType for %v is %v", addr, qType)
 	m1.Question[0] = dns.Question{Name: dns.Fqdn(addr), Qtype: qType, Qclass: dns.ClassINET}
 	c := new(dns.Client)
 	c.Timeout = time.Duration(getConfigTimeoutMs) * time.Millisecond
@@ -105,7 +105,7 @@ func queryDNS(addr string, ch chan *DNSLookupResponse) {
 		}
 		if in != nil {
 			entry := false
-			fmt.Printf("\nReceived dns lookup response")
+            fmt.Printf("\nReceived dns lookup response for host: %v", addr)
 			if qType == dns.TypeA {
 				ipv4Address = getIpv4Address(in)
 				if ipv4Address != "" {
@@ -153,6 +153,8 @@ func getIpv4Address(in *dns.Msg) string {
 		_, ok := rr.(*dns.A)
 		if ok {
 			Arecord := rr.(*dns.A)
+            fmt.Printf("\nDns Answer fields: %+v", Arecord.Header())
+            fmt.Printf("\n\n**Dns TTL field** %v\n\n", Arecord.Header().Ttl)
 			addresss := Arecord.A.String()
 			return addresss
 		}
@@ -165,6 +167,8 @@ func getIpv6Address(in *dns.Msg) string {
 		_, ok := rr.(*dns.AAAA)
 		if ok {
 			AAAArecord := rr.(*dns.AAAA)
+            fmt.Printf("\nDns Answer fields: %+v", AAAArecord.Header())
+            fmt.Printf("\n\n**Dns TTL field**: %v\n\n", AAAArecord.Header().Ttl)
 			addresss := AAAArecord.AAAA.String()
 			return addresss
 		}
