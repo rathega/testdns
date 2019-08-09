@@ -6,7 +6,7 @@ import(
 )
 
 func main() {
-	hostnames := []string{"www.google.com", "www.yahoo.com"}
+	hostnames := []string{"www.sample.com", "www.google.com", "www.yahoo.com"}
 	listHostname := &dnspkg.DnsLookupRequest{}
     listHostname.HostNames = hostnames;
 	data, _ := proto.Marshal(listHostname)

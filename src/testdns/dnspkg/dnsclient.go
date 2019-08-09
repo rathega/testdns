@@ -23,8 +23,12 @@ type DnsServer struct {
     Protocol string `yaml:"protocol"`
 }
 
+/*  INPUTS */
+// DnsServer IP, port, protocol to use
 var getConfigDnsServers = []DnsServer{DnsServer{IP: "64.104.76.247", Port: 53, Protocol: "udp"}}
+// QueryType can be ipv4/ipv6/ipv4v6
 var getConfigQueryType = "ipv4"
+// Timeout value for dns queries
 var getConfigTimeoutMs = 1000
 
 // ProcessDNSLookupRequest function processes the dns lookup request
